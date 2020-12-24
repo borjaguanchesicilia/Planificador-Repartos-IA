@@ -1,1 +1,1 @@
-#  Planificador de repartado PROLOG (IA)
+#  Planificador de reparto PROLOG (IA)
