@@ -1,4 +1,4 @@
-% Definimos los hechos:
+% Productos que pueden haber:
 
 sensible(verduras).
 sensible(frutas).
@@ -9,12 +9,22 @@ empaquetados(cereales).
 agua(agua).
 
 
-% Definimos productos no adyacentes:
+% Sedes de los supermercados (base en polígono de Guímar) 
 
-%not_adjacent(X, Y, [_]) :- X == detergentes,  Y == X.
-%not_adjacent(X, Y, [X, Z|_]) :- Z \== Y.
-%not_adjacent(X, Y, [Y, Z|_]) :- Z \== X.
-%not_adjacent(X, Y, [_|T]) :- not_adjacent(X, Y, T).
+municipio(candelaria, 5).
+municipio(guimar, 2).
+municipio(fasnia, 20).
+municipio(arico, 30).
+municipio(arona, 55).
+municipio(arona, 60).
+municipio(adeje, 70).
+municipio(adeje, 62).
+municipio(santaCruz, 18).
+municipio(laLaguna, 25).
+municipio(puertoCruz, 58).
+municipio(puertoCruz, 56).
+municipio(orotava, 46).
+municipio(realejos, 60).
 
 
 % Orden de reparto:
@@ -43,20 +53,17 @@ cam(N, X, D) :- X is 3 -> ((N > 20 , N =< 30) ; (D < 250)).
 productos([]).
 productos([H|T]) :- productos(T), 	
 	sensible(H) ; fresco(H) ; nocivo(H) ; empaquetados(H) ; agua(H).
-    
-    
-distancia([H|T], H, T).
 
     
-planificador(I, L, O) :-
-    
-    	distancia(L, D, P),
-    	productos(P),
-    	%(not_adjacent(detergentes, frutas, L) ; member(frutas, L)),
-    	%(not_adjacent(detergentes, verduras, L) ; member(verduras, L)),
-    	%(not_adjacent(detergentes, carne, L) ; member(carne, L)),
-    	%(not_adjacent(detergentes, pescado, L); member(pescado, L)),
-	reparto(P, O),
-	num_palets(P, N),
+% Contar kilometros de ir a cada sede desde la base y volver
+sedes([], _, 0).
+sedes([M, D|T], _, Q) :-  municipio(M, D),  sedes(T, D, S), Q is (D * 2) + S. 
+
+
+planificador(I, L, S, O) :-
+    	productos(L),
+    	sedes(S, _, D),
+    	reparto(L, O),
+	num_palets(L, N),
     	cam(N, X, D),
     	append([], [X, D, N], I).
