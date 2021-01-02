@@ -52,7 +52,7 @@ cam(N, X, D) :- X is 3 -> ((N > 20 , N =< 30) ; (D < 250)).
 
 productos([]).
 productos([H|T]) :- productos(T), 	
-	sensible(H) ; fresco(H) ; nocivo(H) ; empaquetados(H) ; agua(H).
+	sensible(H); fresco(H); nocivo(H) ; empaquetados(H) ; agua(H).
 	
 	  
 % Contar kilometros de ir a cada sede desde la base y volver
@@ -63,15 +63,28 @@ sedes([M|T], _, Q) :-  municipio(M, D), sedes(T, D, S), Q is (D * 2) + S.
 palets30(N) :- 30 =< N -> (write('ALERTA: No se puede llevar mas de 30 palets.') , false) ; true .
 
 
+concatena([], Y, Y).
+concatena([H|T1], Y, [H|T2]) :- concatena(T1, Y, T2).
+
+
+adyacente(X, Y, L) :- 	(concatena(_, [X, Y|_], L) -> write('  |  ERROR: Producto nocivo y sensible juntos'), false);
+
+			(not(concatena(_, [X, Y|_], L)) -> true).
+
+
 planificador(I, L, S, O) :-
     	productos(L),
+    	adyacente(detergentes, frutas, L),
+    	adyacente(frutas, detergentes, L),
+    	adyacente(verduras, detergentes, L),
+    	adyacente(detergentes, verduras, L),
     	sedes(S, _, D),
     	reparto(L, O),
-		num_palets(L, N),
-		palets30(N),
+	num_palets(L, N),
+	palets30(N),
     	cam(N, X, D),
     	append([], [X, D, N], I),
-    	write('El tipo de camión es:  '),
+    	write('  |  El tipo de camión es:  '),
     	display(X),
     	write('  |  La distancia a recorrer es:  '),
     	display(D),
