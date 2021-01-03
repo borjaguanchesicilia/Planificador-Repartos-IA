@@ -68,6 +68,9 @@ sedes([M|T], _, Q) :-  municipio(M, D), sedes(T, D, S), Q is (D * 2) + S.
 palets30(N) :- 30 =< N -> (write('\n\n ALERTA: No se puede llevar mas de 30 palets. \n\n') , exit) ; true .
 
 
+distancia300(D) :- 300 =< D -> (write('\n\n ALERTA: No se puede recorrer más de 300 km. \n\n') , exit) ; true .
+
+
 exit :- halt.
 
 
@@ -96,6 +99,7 @@ planificador(I, L, S) :-
     	sedes(S, _, D),
 	num_palets(L, N),
 	palets30(N),
+	distancia300(D),
     	cam(N, D, X),
     	append([], [X, D, N], I),
     	write('\n El tipo de camión es:  '),
