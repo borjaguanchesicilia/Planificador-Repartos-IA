@@ -51,8 +51,13 @@ cam(N, X, D) :- X is 3 -> ((N > 20 , N =< 30) ; (D < 300)).
 % Busqueda para asegurarnos que el producto del palet existe.
 
 productos([]).
-productos([H|T]) :- productos(T), 	
-	sensible(H); fresco(H); nocivo(H) ; empaquetados(H) ; frio(H); agua(H).
+productos([H|T]) :- (sensible(H); 
+                    fresco(H); 
+                    nocivo(H); 
+                    empaquetados(H);
+                    frio(H);
+                    agua(H)),
+                    productos(T).
 	
 	  
 % Contar kilometros de ir a cada sede desde la base y volver
