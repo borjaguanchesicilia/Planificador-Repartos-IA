@@ -61,8 +61,8 @@ productos([H|T]) :- (sensible(H);
 	
 	  
 % Contar kilometros de ir a cada sede desde la base y volver
-sedes([], _, 0).
-sedes([M|T], _, Q) :-  municipio(M, D), sedes(T, D, S), Q is (D * 2) + S. 
+sedes([], 0).
+sedes([M|T], Q) :-  municipio(M, D), sedes(T, S), Q is (D * 2) + S. 
 
 
 palets30(N) :- 30 =< N -> (write('\n\n ALERTA: No se puede llevar mas de 30 palets. \n\n') , exit) ; true .
@@ -96,7 +96,7 @@ planificador(I, L, S) :-
     	adyacente(carnes, productoNocivo, L),
     	adyacente(pescados, productoNocivo, L),
     	adyacente(productoNocivo, pescados, L),
-    	sedes(S, _, D),
+    	sedes(S, D),
 	num_palets(L, N),
 	palets30(N),
 	distancia300(D),
