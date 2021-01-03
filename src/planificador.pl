@@ -1,11 +1,17 @@
 %Productos que pueden haber:
 
-sensible(verduras).
-sensible(frutas).
-fresco(carne).
-fresco(pescado).
-nocivo(detergentes).
-empaquetados(cereales).
+sensible(X) :- X == frutas; X == verduras.
+
+fresco(X) :- X == carnes; X == pescados.
+
+nocivo(productoNocivo).
+
+empaquetados(X) :- Empaquetados = [cereales, panMolde, pastas, enlatados, encurtidos],
+                   member(X, Empaquetados).
+
+frio(X) :- Frio = [lacteos, congelados, chacinas],
+                   member(X, Frio).
+                   
 agua(agua).
 
 
@@ -17,20 +23,14 @@ municipio(fasnia, D) :- D is 20 + 0.
 municipio(arico, D) :- D is 30 + 0.
 municipio(arona, D) :- D is 55 + 0.
 municipio(arona, D) :- D is 60 + 0.
-municipio(adeje, D) :- D is 70 + 0.
-municipio(adeje, D) :- D is 62 + 0.
+municipio(adeje_1, D) :- D is 70 + 0.
+municipio(adeje_2, D) :- D is 62 + 0.
 municipio(santaCruz, D) :- D is 18 + 0.
 municipio(laLaguna, D) :- D is 25 + 0.
-municipio(puertoCruz, D) :- D is 58 + 0.
-municipio(puertoCruz, D) :- D is 56 + 0.
+municipio(puertoCruz_1, D) :- D is 58 + 0.
+municipio(puertoCruz_2, D) :- D is 56 + 0.
 municipio(orotava, D) :- D is 46 + 0.
 municipio(realejos, D) :- D is 60 + 0.
-
-
-% Orden de reparto:
-
-reparto([], []).
-reparto([H|T], [H|O]) :- reparto(T, O).
 
 
 % Nº de palets:
@@ -43,16 +43,16 @@ num_palets([_|L], N) :- num_palets(L, N1), N is N1 + 1.
 
 cam(N, X, D) :- X is 1 -> ((N > 1 , N =< 10) , (D < 100)).
 
-cam(N, X, D) :- X is 2 -> ((N > 11 , N =< 19) , (D < 150)).
+cam(N, X, D) :- X is 2 -> ((N > 11 , N =< 19) ; (D < 150)).
 
-cam(N, X, D) :- X is 3 -> ((N > 20 , N =< 30) ; (D < 250)).
+cam(N, X, D) :- X is 3 -> ((N > 20 , N =< 30) ; (D < 300)).
 
 
 % Busqueda para asegurarnos que el producto del palet existe.
 
 productos([]).
 productos([H|T]) :- productos(T), 	
-	sensible(H); fresco(H); nocivo(H) ; empaquetados(H) ; agua(H).
+	sensible(H); fresco(H); nocivo(H) ; empaquetados(H) ; frio(H); agua(H).
 	
 	  
 % Contar kilometros de ir a cada sede desde la base y volver
@@ -60,33 +60,42 @@ sedes([], _, 0).
 sedes([M|T], _, Q) :-  municipio(M, D), sedes(T, D, S), Q is (D * 2) + S. 
 
 
-palets30(N) :- 30 =< N -> (write('ALERTA: No se puede llevar mas de 30 palets.') , false) ; true .
+palets30(N) :- 30 =< N -> (write('\n\n ALERTA: No se puede llevar mas de 30 palets. \n\n') , exit) ; true .
+
+
+exit :- halt.
 
 
 concatena([], Y, Y).
 concatena([H|T1], Y, [H|T2]) :- concatena(T1, Y, T2).
 
 
-adyacente(X, Y, L) :- 	(concatena(_, [X, Y|_], L) -> write('  |  ERROR: Producto nocivo y sensible juntos'), false);
+adyacente(X, Y, L) :- 	(concatena(_, [X, Y|_], L) ->  false);
 
 			(not(concatena(_, [X, Y|_], L)) -> true).
 
 
-planificador(I, L, S, O) :-
+general(I, L, S, Orden) :- permutation(Orden, L), planificador(I, Orden, S).
+
+
+planificador(I, L, S) :-
     	productos(L),
-    	adyacente(detergentes, frutas, L),
-    	adyacente(frutas, detergentes, L),
-    	adyacente(verduras, detergentes, L),
-    	adyacente(detergentes, verduras, L),
+    	adyacente(productoNocivo, frutas, L),
+    	adyacente(frutas, productoNocivo, L),
+    	adyacente(verduras, productoNocivo, L),
+    	adyacente(productoNocivo, verduras, L),
+    	adyacente(productoNocivo, carnes, L),
+    	adyacente(carnes, productoNocivo, L),
+    	adyacente(pescados, productoNocivo, L),
+    	adyacente(productoNocivo, pescados, L),
     	sedes(S, _, D),
-    	reparto(L, O),
 	num_palets(L, N),
 	palets30(N),
     	cam(N, X, D),
     	append([], [X, D, N], I),
-    	write('  |  El tipo de camión es:  '),
+    	write('\n El tipo de camión es:  '),
     	display(X),
-    	write('  |  La distancia a recorrer es:  '),
+    	write('\n La distancia a recorrer es:  '),
     	display(D),
-    	write('  |  El número de palets es:  '),
+    	write('\n El número de palets es:  '),
     	display(N).
