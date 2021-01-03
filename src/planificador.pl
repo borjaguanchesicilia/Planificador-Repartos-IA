@@ -41,11 +41,11 @@ num_palets([_|L], N) :- num_palets(L, N1), N is N1 + 1.
 
 % Tipo de caminon:
 
-cam(N, X, D) :- X is 1 -> ((N > 1 , N =< 10) , (D < 100)).
+cam(N, D, X) :- X is 1 -> ((N > 1 , N =< 10) , (D < 100)).
 
-cam(N, X, D) :- X is 2 -> ((N > 11 , N =< 19) ; (D < 150)).
+cam(N, D, X) :- X is 2 -> ((N > 11 , N =< 19) ; (D < 150)).
 
-cam(N, X, D) :- X is 3 -> ((N > 20 , N =< 30) ; (D < 300)).
+cam(N, D, X) :- X is 3 -> ((N > 20 , N =< 30) ; (D < 300)).
 
 
 % Busqueda para asegurarnos que el producto del palet existe.
@@ -96,7 +96,7 @@ planificador(I, L, S) :-
     	sedes(S, _, D),
 	num_palets(L, N),
 	palets30(N),
-    	cam(N, X, D),
+    	cam(N, D, X),
     	append([], [X, D, N], I),
     	write('\n El tipo de camión es:  '),
     	display(X),
