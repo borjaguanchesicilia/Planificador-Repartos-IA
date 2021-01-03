@@ -43,7 +43,7 @@ num_palets([_|L], N) :- num_palets(L, N1), N is N1 + 1.
 
 cam(N, D, X) :- X is 1 -> ((N > 1 , N =< 10) , (D < 100)).
 
-cam(N, D, X) :- X is 2 -> ((N > 11 , N =< 19) ; (D < 150)).
+cam(N, D, X) :- X is 2 -> ((N > 11 , N =< 19) , (D < 150)).
 
 cam(N, D, X) :- X is 3 -> ((N > 20 , N =< 30) ; (D < 300)).
 
