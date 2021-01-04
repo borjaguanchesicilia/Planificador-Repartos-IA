@@ -1,9 +1,9 @@
-concatena([], Y, Y).
-concatena([H|T1], Y, [H|T2]) :- concatena(T1, Y, T2).
+comprobarAdyacente(X, X).
+comprobarAdyacente(X, [_|T]) :- comprobarAdyacente(X, T).
 
-adyacente(X, Y, L) :- 	(concatena(_, [X, Y|_], L) -> false);
+adyacente(P1, P2, Productos) :- (comprobarAdyacente([P1, P2|_], Productos) ->  false);
 
-			(not(concatena(_, [X, Y|_], L)) -> true).
+				 (not(comprobarAdyacente([P1, P2|_], Productos)) -> true).
 			
 			
 % adyacente(productoNocivo, frutas, [frutas, verduras, cereales, productoNocivo]). true
