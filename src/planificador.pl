@@ -36,7 +36,7 @@ municipio(realejos, Distancia) :- Distancia is 60 + 0.
 % Nº de palets:
 
 num_palets([], 0).
-num_palets([_|L], N) :- num_palets(L, N1), N is N1 + 1.
+num_palets([_|L], Palets) :- num_palets(L, N), Palets is N + 1.
 
 
 % Tipo de caminon:
