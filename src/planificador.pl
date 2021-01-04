@@ -21,8 +21,8 @@ municipio(candelaria, Distancia) :- Distancia is 5 + 0.
 municipio(guimar, Distancia) :- Distancia is 2 + 0.
 municipio(fasnia, Distancia) :- Distancia is 20 + 0.
 municipio(arico, Distancia) :- Distancia is 30 + 0.
-municipio(arona, Distancia) :- Distancia is 55 + 0.
-municipio(arona, Distancia) :- Distancia is 60 + 0.
+municipio(arona_1, Distancia) :- Distancia is 55 + 0.
+municipio(arona_2, Distancia) :- Distancia is 60 + 0.
 municipio(adeje_1, Distancia) :- Distancia is 70 + 0.
 municipio(adeje_2, Distancia) :- Distancia is 62 + 0.
 municipio(santaCruz, Distancia) :- Distancia is 18 + 0.
