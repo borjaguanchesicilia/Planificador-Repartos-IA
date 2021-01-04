@@ -2,8 +2,8 @@ municipio(candelaria, D) :- D is 5 + 0.
 municipio(guimar, D) :- D is 2 + 0.
 municipio(fasnia, D) :- D is 20 + 0.
 municipio(arico, D) :- D is 30 + 0.
-municipio(arona, D) :- D is 55 + 0.
-municipio(arona, D) :- D is 60 + 0.
+municipio(arona_1, D) :- D is 55 + 0.
+municipio(arona_2, D) :- D is 60 + 0.
 municipio(adeje_1, D) :- D is 70 + 0.
 municipio(adeje_2, D) :- D is 62 + 0.
 municipio(santaCruz, D) :- D is 18 + 0.
