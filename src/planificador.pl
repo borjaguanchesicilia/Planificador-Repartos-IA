@@ -83,11 +83,12 @@ adyacente(P1, P2, Productos) :- (comprobarAdyacente([P1, P2|_], Productos) ->  f
 				 (not(comprobarAdyacente([P1, P2|_], Productos)) -> true).
 
 
-general(Info, Productos, Sedes, Orden) :- permutation(Orden, Productos), planificador(Info, Orden, Sedes).
+general(Info, Productos, Sedes, Orden) :- productos(Productos),
+                                          permutation(Orden, Productos), 
+                                          planificador(Info, Orden, Sedes).
 
 
 planificador(Info, Productos, Sedes) :-
-    	productos(Productos),
     	adyacente(productoNocivo, frutas, Productos),
     	adyacente(frutas, productoNocivo, Productos),
     	adyacente(verduras, productoNocivo, Productos),
